@@ -15,7 +15,10 @@ import {
 import stripesFinalForm from '@folio/stripes/final-form';
 import { IfPermission } from '@folio/stripes/core';
 
+import CreateUserOptions from './CreateUserOptions'
+
 import styles from './SSOSettings.css';
+
 
 const validate = (values) => {
   const errors = {};
@@ -182,6 +185,11 @@ class SamlForm extends React.Component {
                 fullWidth
                 required
               />
+            </Col>
+          </Row>
+          <Row>
+            <Col id="saml_createuser_settings">
+              <CreateUserOptions initialValues={ this.props.initialValues } />
             </Col>
           </Row>
         </Pane>

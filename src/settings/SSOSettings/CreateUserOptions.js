@@ -12,7 +12,6 @@ const CreateUserOptions = ({initialValues}) => {
   const [sectionEnabled, setSectionEnabled] = useState(initialValues?.userCreateMissing == true ?? false);
   
   return <Field
-    label={<FormattedMessage id="ui-tenant-settings.settings.saml.user.createMissing" />}
     name="userCreateMissing"
     id="samlconfig_userCreateMissing"
     type='checkbox'
@@ -21,7 +20,8 @@ const CreateUserOptions = ({initialValues}) => {
         // We wish to provide a custom onChange.
         const { onChange, ...inputProps } = props.input;
         return <Checkbox
-          {...inputProps}
+          label={<FormattedMessage id="ui-tenant-settings.settings.saml.user.createMissing" />}
+          { ...inputProps }
           onChange={(event) => {
             
             // Maintain state here too.

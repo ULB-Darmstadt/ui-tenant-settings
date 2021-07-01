@@ -32,6 +32,7 @@
   "settings.saml.binding": "SAML binding",
   "settings.saml.attribute": "SAML attribute",
   "settings.saml.userProperty": "User property",
+  "settings.saml.user.createMissing": "Automatically create authenticated users not in the system",
 
   "settings.location.label": "Location setup",
   "settings.location.code": "Code",

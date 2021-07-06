@@ -2,40 +2,53 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'react-final-form';
-
-import { Checkbox } from '@folio/stripes/components';
+import {
+  Col,
+  Row,
+  Checkbox,
+  AccordionSet,
+  Accordion } from '@folio/stripes/components';
 //import stripesFinalForm from '@folio/stripes/final-form';
-import { IfPermission } from '@folio/stripes/core';
+
+import DefaultUserProperties from './sections/DefaultUserProperties'
 
 const CreateUserOptions = ({initialValues}) => {
   
-  const [sectionEnabled, setSectionEnabled] = useState(initialValues?.userCreateMissing == true ?? false);
   
-  return <Field
-    name="userCreateMissing"
-    id="samlconfig_userCreateMissing"
-    type='checkbox'
-    component={
-      (props) => {
-        // We wish to provide a custom onChange.
-        const { onChange, ...inputProps } = props.input;
-        return <Checkbox
-          label={<FormattedMessage id="ui-tenant-settings.settings.saml.user.createMissing" />}
-          { ...inputProps }
-          onChange={(event) => {
-            
-            // Maintain state here too.
-            setSectionEnabled(!sectionEnabled);
-            
-            // Call the passed onChange...
-            onChange(event);
-            // consume event.target.value
-          }}
-        />
-      }
-    }
-    required
-  />
+  const [createEnabled, setCreateEnabled] = useState (initialValues.userCreateMissing);
+  
+  return <AccordionSet>
+    <Accordion
+      id="CreateUserOptions"
+      label={<FormattedMessage id="ui-tenant-settings.settings.saml.user.createMissingAccordion" />}
+    >
+      <Row>
+        <Col xs={12}>
+          <Field
+            name="userCreateMissing"
+            id="samlconfig_userCreateMissing"
+            type='checkbox'
+            component={({input}) => {
+              const { onChange, ...inputProps } = input;
+              
+              return <Checkbox
+                label={<FormattedMessage id="ui-tenant-settings.settings.saml.user.createMissing" />}
+                inline
+                checked={createEnabled}
+                onChange={(event) => {
+                  setCreateEnabled(!createEnabled);
+                  onChange(event);
+                }}
+                { ...inputProps }
+              />
+            }}
+          />
+        </Col>
+      </Row>
+      <DefaultUserProperties
+        defaultUserProp='defaultUser' />
+    </Accordion>
+  </AccordionSet>
 }
 
 CreateUserOptions.propTypes = {
@@ -43,3 +56,4 @@ CreateUserOptions.propTypes = {
 };
 
 export default CreateUserOptions;
+

@@ -128,7 +128,7 @@ const DefaultUserProperties = ({ defaultUserProp }) => {
       />
     </Col>
     { propertySets.map(property => <PropertyCollectionSet key={`${property}Set` } defaultUserProp={defaultUserProp} name={property} />) }
-    <Col xs={12} md={6}><PatronGroupSelection /></Col>
+    <Col xs={12} md={6}><PatronGroupSelection defaultUserProp={defaultUserProp} /></Col>
   </Row>
 };
 

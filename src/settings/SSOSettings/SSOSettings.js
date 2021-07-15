@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
@@ -70,9 +69,12 @@ class SSOSettings extends React.Component {
   getConfig() {
     const { resources } = this.props;
     const config = (resources.samlconfig || {}).records || [];
-    const configValue = (config.length === 0) ? {} : config[0];
-    const configData = configValue ? _.cloneDeep(configValue) : configValue;
-    return configData;
+    return (config.length === 0) ? {} : config[0];
+    // Note: The below causes infinite redraws if the config contains
+    // child objects. Commenting out has not produced and
+    
+//    const configData = configValue ? _.cloneDeep(configValue) : configValue;
+//    return configData;
   }
 
   updateSettings(settings) {

@@ -59,7 +59,7 @@ const CreateUserOptions = ({initialValues, extensionPoints}) => {
         </Col>
       </Row>
       <DefaultUserProperties
-        defaultUserProp='defaultUser' />
+        defaultUserProp='samlDefaultUser' />
     </Accordion>
 };
 

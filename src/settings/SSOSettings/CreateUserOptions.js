@@ -6,20 +6,33 @@ import {
   Col,
   Row,
   Checkbox,
-  AccordionSet,
   Accordion } from '@folio/stripes/components';
 //import stripesFinalForm from '@folio/stripes/final-form';
 
-import DefaultUserProperties from './sections/DefaultUserProperties'
+import DefaultUserProperties from './sections/DefaultUserProperties';
 
-const CreateUserOptions = ({initialValues}) => {
+let extended = false;
+const appendValidation = (list) => {
+  if (extended === false) {
+//    list.push(({userCreateMissing}) => {
+//      const errors = {};
+//      if (userCreateMissing == true) {
+//        // Validate and add messages.
+//        errors.samlBinding = <FormattedMessage id="ui-tenant-settings.settings.saml.validate.binding" />;
+//      }
+//      return errors;
+//    });
+  }
+};
+
+const CreateUserOptions = ({initialValues, extensionPoints}) => {
+  // extend with our validation.
+  appendValidation(extensionPoints);
   
-  
-  const [createEnabled, setCreateEnabled] = useState (initialValues.userCreateMissing);
-  
-  return <AccordionSet>
-    <Accordion
+  const [createEnabled, setCreateEnabled] = useState ((initialValues?.userCreateMissing == true));
+  return <Accordion
       id="CreateUserOptions"
+      closedByDefault={!createEnabled}
       label={<FormattedMessage id="ui-tenant-settings.settings.saml.user.createMissingAccordion" />}
     >
       <Row>
@@ -48,11 +61,13 @@ const CreateUserOptions = ({initialValues}) => {
       <DefaultUserProperties
         defaultUserProp='defaultUser' />
     </Accordion>
-  </AccordionSet>
-}
+};
 
 CreateUserOptions.propTypes = {
   initialValues: PropTypes.object.isRequired,
+  extensionPoints: PropTypes.arrayOf(
+    PropTypes.func
+  ).isRequired,
 };
 
 export default CreateUserOptions;

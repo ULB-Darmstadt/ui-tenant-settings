@@ -182,6 +182,7 @@
     "babel-jest": "^26.3.0",
     "babel-plugin-module-resolver": "^4.0.0",
     "chai": "^4.2.0",
+    "core-js": "^3.6.1",
     "eslint": "^6.8.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^24.0.0",
@@ -199,9 +200,8 @@
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
     "redux": "^4.0.0",
-    "sinon": "^7.2.2",
-    "core-js": "^3.6.1",
-    "regenerator-runtime": "^0.13.3"
+    "regenerator-runtime": "^0.13.3",
+    "sinon": "^7.2.2"
   },
   "dependencies": {
     "@folio/react-intl-safe-html": "^2.0.0",
@@ -211,6 +211,7 @@
     "query-string": "^6.8.1",
     "react-final-form": "^6.3.0",
     "react-final-form-arrays": "^3.1.1",
+    "react-query": "^3.18.1",
     "redux-form": "^8.0.0"
   },
   "peerDependencies": {

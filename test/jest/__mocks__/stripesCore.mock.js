@@ -98,5 +98,8 @@ jest.mock('@folio/stripes/core', () => {
     withStripes,
     // eslint-disable-next-line react/prop-types
     Pluggable: props => <>{props.children}</>,
+    IfPermission: ({ children }) => <>{children}</>,
+    supportedLocales: ['ar', 'en', 'fr-FR'],
+    supportedNumberingSystems: ['latn', 'arab'],
   };
 }, { virtual: true });

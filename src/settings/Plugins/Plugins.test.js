@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { act, waitFor, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import user from '@testing-library/user-event';
 
 import '../../../test/jest/__mocks__';

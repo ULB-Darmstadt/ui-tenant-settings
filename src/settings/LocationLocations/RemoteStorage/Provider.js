@@ -57,14 +57,14 @@ const Provider = ({ resources, mutator, stripes, ...rest }) => {
 Provider.manifest = Object.freeze({
   configurations: {
     type: 'okapi',
-    path: 'remote-storage/configurations',
+    path: 'remote-storage/configurations?limit=10000',
     accumulate: true,
     records: 'configurations',
     throwErrors: false,
   },
   mappings: {
     type: 'okapi',
-    path: 'remote-storage/mappings',
+    path: 'remote-storage/mappings?limit=10000',
     records: 'mappings',
     pk: 'folioLocationId',
     clientGeneratePk: false, // because we use POST instead of PUT for modification here (there's no PUT)

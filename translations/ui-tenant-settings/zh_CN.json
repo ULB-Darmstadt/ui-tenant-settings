@@ -62,7 +62,7 @@
     "settings.servicePoints.description": "描述",
     "settings.servicePoints.shelvingLagTime": "排架延迟时间 (分钟)",
     "settings.servicePoints.pickupLocation": "取件地",
-    "settings.servicePoints.feeFineOwner": "费用/罚款缴费处",
+    "settings.servicePoints.feeFineOwner": "缴费处",
     "settings.servicePoints.deleteServicePoint": "删除服务点",
     "settings.servicePoints.delete": "删除",
     "settings.servicePoints.untitledServicePoint": "服务点名称",

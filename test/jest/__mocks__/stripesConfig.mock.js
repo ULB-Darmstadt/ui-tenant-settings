@@ -12,5 +12,7 @@ jest.mock('stripes-config', () => (
         }
       ],
     },
+    metadata: {},
+    icons: {},
   }
 ), { virtual: true });

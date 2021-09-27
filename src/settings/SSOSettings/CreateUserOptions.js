@@ -1,36 +1,36 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'react-final-form';
-import {
-  Col,
+import { Col,
   Row,
   Checkbox,
   Accordion } from '@folio/stripes/components';
-//import stripesFinalForm from '@folio/stripes/final-form';
+// import stripesFinalForm from '@folio/stripes/final-form';
 
 import DefaultUserProperties from './sections/DefaultUserProperties';
 
-let extended = false;
+const extended = false;
 const appendValidation = (list) => {
   if (extended === false) {
-//    list.push(({userCreateMissing}) => {
-//      const errors = {};
-//      if (userCreateMissing == true) {
-//        // Validate and add messages.
-//        errors.samlBinding = <FormattedMessage id="ui-tenant-settings.settings.saml.validate.binding" />;
-//      }
-//      return errors;
-//    });
+    //    list.push(({userCreateMissing}) => {
+    //      const errors = {};
+    //      if (userCreateMissing == true) {
+    //        // Validate and add messages.
+    //        errors.samlBinding = <FormattedMessage id="ui-tenant-settings.settings.saml.validate.binding" />;
+    //      }
+    //      return errors;
+    //    });
   }
 };
 
-const CreateUserOptions = ({initialValues, extensionPoints}) => {
+const CreateUserOptions = ({ initialValues, extensionPoints }) => {
   // extend with our validation.
   appendValidation(extensionPoints);
-  
-  const [createEnabled, setCreateEnabled] = useState ((initialValues?.userCreateMissing == true));
-  return <Accordion
+
+  const [createEnabled, setCreateEnabled] = useState((initialValues?.userCreateMissing === true));
+  return (
+    <Accordion
       id="CreateUserOptions"
       closedByDefault={!createEnabled}
       label={<FormattedMessage id="ui-tenant-settings.settings.saml.user.createMissingAccordion" />}
@@ -40,10 +40,10 @@ const CreateUserOptions = ({initialValues, extensionPoints}) => {
           <Field
             name="userCreateMissing"
             id="samlconfig_userCreateMissing"
-            type='checkbox'
-            component={({input}) => {
+            type="checkbox"
+            component={({ input }) => {
               const { onChange, ...inputProps } = input;
-              
+
               return <Checkbox
                 label={<FormattedMessage id="ui-tenant-settings.settings.saml.user.createMissing" />}
                 inline
@@ -52,15 +52,17 @@ const CreateUserOptions = ({initialValues, extensionPoints}) => {
                   setCreateEnabled(!createEnabled);
                   onChange(event);
                 }}
-                { ...inputProps }
-              />
+                {...inputProps}
+              />;
             }}
           />
         </Col>
       </Row>
       <DefaultUserProperties
-        defaultUserProp='samlDefaultUser' />
+        defaultUserProp="samlDefaultUser"
+      />
     </Accordion>
+  );
 };
 
 CreateUserOptions.propTypes = {

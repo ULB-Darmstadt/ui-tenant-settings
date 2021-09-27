@@ -72,9 +72,9 @@ class SSOSettings extends React.Component {
     return (config.length === 0) ? {} : config[0];
     // Note: The below causes infinite redraws if the config contains
     // child objects. Commenting out has not produced and
-    
-//    const configData = configValue ? _.cloneDeep(configValue) : configValue;
-//    return configData;
+
+    //    const configData = configValue ? _.cloneDeep(configValue) : configValue;
+    //    return configData;
   }
 
   updateSettings(settings) {

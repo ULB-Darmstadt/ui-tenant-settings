@@ -106,7 +106,7 @@ const DefaultUserProperties = ({ defaultUserProp }) => {
   const usingEmail = enabled && currentUserProperty === 'email';
   
   return <Row tagName='fieldset' >
-    <Col xs={12} tagName='legend' ><FormattedMessage id="ui-tenant-settings.settings.saml.defaultUserAttributes" /></Col>
+    {/* <Col xs={12} tagName='legend' ><FormattedMessage id="ui-tenant-settings.settings.saml.defaultUserAttributes" /></Col> */}
     <Col xs={12} >
       <Field
         label={<FormattedMessage id="ui-tenant-settings.settings.saml.defaultUser.usernameAttribute" />}

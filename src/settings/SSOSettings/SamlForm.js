@@ -15,7 +15,7 @@ import {
 import stripesFinalForm from '@folio/stripes/final-form';
 import { IfPermission } from '@folio/stripes/core';
 
-import CreateUserOptions from './CreateUserOptions'
+import CreateUserOptions from './CreateUserOptions';
 
 import styles from './SSOSettings.css';
 
@@ -32,10 +32,10 @@ const validate = values => {
   if (!values.userProperty) {
     errors.userProperty = <FormattedMessage id="ui-tenant-settings.settings.saml.validate.userProperty" />;
   }
-        
+
   // Decorate with the custom validators
-  Object.assign(errors, ...extensionPoints.map(f => f(values)) );
-  
+  Object.assign(errors, ...extensionPoints.map(f => f(values)));
+
   return errors;
 };
 
@@ -96,7 +96,7 @@ class SamlForm extends React.Component {
     const identifierOptions = (optionLists.identifierOptions || []).map(i => (
       { id: i.key, label: i.label, value: i.key, selected: initialValues.userProperty === i.key }
     ));
-    
+
     const samlBindingOptions = optionLists.samlBindingOptions.map(i => (
       { id: i.key, label: i.label, value: i.key, selected: initialValues.samlBinding === i.key }
     ));
@@ -194,7 +194,7 @@ class SamlForm extends React.Component {
           </Row>
           <Row>
             <Col id="saml_createuser_settings">
-              <CreateUserOptions extensionPoints={extensionPoints} initialValues={ this.props.initialValues } />
+              <CreateUserOptions extensionPoints={extensionPoints} initialValues={this.props.initialValues} />
             </Col>
           </Row>
         </Pane>

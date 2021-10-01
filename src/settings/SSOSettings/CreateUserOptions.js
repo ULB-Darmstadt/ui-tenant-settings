@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'react-final-form';
@@ -28,11 +28,17 @@ const CreateUserOptions = ({ initialValues, extensionPoints }) => {
   // extend with our validation.
   appendValidation(extensionPoints);
 
-  const [createEnabled, setCreateEnabled] = useState((initialValues?.userCreateMissing === true));
+  const [createEnabled, setCreateEnabled] = useState();
+
+  useEffect(() => {
+    if (createEnabled === undefined) {
+      setCreateEnabled(initialValues.userCreateMissing);
+    }
+  });
+
   return (
     <Accordion
       id="CreateUserOptions"
-      closedByDefault={!createEnabled}
       label={<FormattedMessage id="ui-tenant-settings.settings.saml.user.createMissingAccordion" />}
     >
       <Row>
@@ -58,9 +64,12 @@ const CreateUserOptions = ({ initialValues, extensionPoints }) => {
           />
         </Col>
       </Row>
-      <DefaultUserProperties
-        defaultUserProp="samlDefaultUser"
-      />
+      {createEnabled ?
+        <DefaultUserProperties
+          defaultUserProp="samlDefaultUser"
+        />
+        :
+        null}
     </Accordion>
   );
 };
@@ -73,4 +82,3 @@ CreateUserOptions.propTypes = {
 };
 
 export default CreateUserOptions;
-

@@ -11,3 +11,8 @@ junit.xml
 stripes.config.js.local
 
 .idea
+
+# Exclude all root dot filed/dirs except eslint and git files.
+/.*
+!/.git*
+!/.eslint

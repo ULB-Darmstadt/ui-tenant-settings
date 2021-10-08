@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'react-final-form';
-import { Col,
-  Row,
+import {
+  Accordion,
   Checkbox,
-  Accordion } from '@folio/stripes/components';
-// import stripesFinalForm from '@folio/stripes/final-form';
+  Col,
+  Row,
+} from '@folio/stripes/components';
 
 import DefaultUserProperties from './sections/DefaultUserProperties';
+import IdentityProviderProperties from './sections/IdentityProviderProperties';
 
 const extended = false;
 const appendValidation = (list) => {
@@ -38,6 +40,7 @@ const CreateUserOptions = ({ initialValues, extensionPoints }) => {
 
   return (
     <Accordion
+      // closedByDefault={!createEnabled}
       id="CreateUserOptions"
       label={<FormattedMessage id="ui-tenant-settings.settings.saml.user.createMissingAccordion" />}
     >
@@ -64,12 +67,12 @@ const CreateUserOptions = ({ initialValues, extensionPoints }) => {
           />
         </Col>
       </Row>
-      {createEnabled ?
-        <DefaultUserProperties
-          defaultUserProp="samlDefaultUser"
-        />
-        :
-        null}
+      <DefaultUserProperties
+        defaultUserProp="samlDefaultUser"
+      />
+      <IdentityProviderProperties
+        defaultIdpProp="samlDefaultIdp"
+      />
     </Accordion>
   );
 };

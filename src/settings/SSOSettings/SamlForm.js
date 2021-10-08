@@ -92,7 +92,7 @@ class SamlForm extends React.Component {
       validateIdpUrl,
       values,
     } = this.props;
-    
+
     const identifierOptions = (optionLists.identifierOptions || []).map(i => (
       { id: i.key, label: i.label, value: i.key, selected: initialValues.userProperty === i.key }
     ));
@@ -153,7 +153,7 @@ class SamlForm extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col id="select_samlBinding">
+            <Col id="select_samlBinding" xs={12} md={6}>
               <Field
                 label={<FormattedMessage id="ui-tenant-settings.settings.saml.binding" />}
                 name="samlBinding"
@@ -165,9 +165,7 @@ class SamlForm extends React.Component {
                 required
               />
             </Col>
-          </Row>
-          <Row>
-            <Col id="fill_attribute">
+            <Col id="fill_attribute" xs={12} md={6}>
               <Field
                 label={<FormattedMessage id="ui-tenant-settings.settings.saml.attribute" />}
                 name="samlAttribute"
@@ -179,7 +177,7 @@ class SamlForm extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col id="select_userProperty">
+            <Col id="select_userProperty" xs={12} md={6}>
               <Field
                 label={<FormattedMessage id="ui-tenant-settings.settings.saml.userProperty" />}
                 name="userProperty"
@@ -194,7 +192,10 @@ class SamlForm extends React.Component {
           </Row>
           <Row>
             <Col id="saml_createuser_settings">
-              <CreateUserOptions extensionPoints={extensionPoints} initialValues={this.props.initialValues} />
+              <CreateUserOptions
+                extensionPoints={extensionPoints}
+                initialValues={this.props.initialValues}
+              />
             </Col>
           </Row>
         </Pane>

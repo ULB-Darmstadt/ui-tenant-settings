@@ -111,7 +111,7 @@
     "settings.servicePoints.pickupLocation.no": "否",
     "settings.save.error.network": "记录未保存",
     "settings.locale.localeWarning": "此页面上的设置将永久更改所有用户的语言环境（包括语言显示、日期格式和数字格式）。强烈建议您不要在此处更改语言环境，除非您完全确定这是正确的操作。要仅临时更改会话的语言环境，请单击“ {label} ”按钮。",
-    "settings.locale.changeSessionLocale": "更改会话语言环境",
+    "settings.locale.changeSessionLocale": "更改临时语言环境",
     "settings.general.saveAndClose": "保存并关闭",
     "settings.pluginNames.create-inventory-records": "创建典藏记录",
     "settings.pluginNames.find-user": "查找用户",

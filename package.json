@@ -1,6 +1,6 @@
 {
   "name": "@folio/tenant-settings",
-  "version": "6.1.0",
+  "version": "7.0.0",
   "description": "Tenant settings",
   "main": "src/index.js",
   "repository": "folio-org/ui-tenant-settings",
@@ -94,7 +94,6 @@
         "permissionName": "ui-tenant-settings.settings.location",
         "displayName": "Settings (tenant): Can create, edit and remove locations",
         "subPermissions": [
-          "configuration.all",
           "settings.tenant-settings.enabled",
           "users.item.get",
           "users.collection.get",
@@ -132,7 +131,6 @@
         "permissionName": "ui-tenant-settings.settings.servicepoints",
         "displayName": "Settings (tenant):  Can create, edit and remove service points",
         "subPermissions": [
-          "configuration.all",
           "settings.tenant-settings.enabled",
           "users.item.get",
           "users.collection.get",
@@ -169,11 +167,11 @@
     "@bigtest/mocha": "^0.5.2",
     "@bigtest/react": "^0.1.2",
     "@folio/eslint-config-stripes": "^3.2.1",
-    "@folio/stripes": "^6.0.0",
+    "@folio/stripes": "^7.0.0",
     "@folio/stripes-cli": "^2.0.0",
-    "@folio/stripes-components": "^9.0.0",
-    "@folio/stripes-core": "^7.0.0",
-    "@folio/stripes-smart-components": "^6.0.0",
+    "@folio/stripes-components": "^10.0.0",
+    "@folio/stripes-core": "^8.0.0",
+    "@folio/stripes-smart-components": "^7.0.0",
     "@testing-library/dom": "^7.26.3",
     "@testing-library/jest-dom": "^5.11.1",
     "@testing-library/react": "^11.0.2",
@@ -194,8 +192,8 @@
     "jest": "^26.4.2",
     "jest-junit": "^11.1.0",
     "miragejs": "^0.1.40",
-    "react": "^16.5.0",
-    "react-dom": "^16.5.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-intl": "^5.8.0",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
@@ -215,8 +213,9 @@
     "redux-form": "^8.0.0"
   },
   "peerDependencies": {
-    "@folio/stripes": "^6.0.0",
-    "react": "*",
+    "@folio/stripes": "^7.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-intl": "^5.8.0",
     "react-router-dom": "^5.2.0"
   }

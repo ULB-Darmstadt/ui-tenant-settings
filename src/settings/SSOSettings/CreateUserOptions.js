@@ -6,6 +6,7 @@ import {
   Accordion,
   Checkbox,
   Col,
+  InfoPopover,
   Row,
 } from '@folio/stripes/components';
 
@@ -28,7 +29,7 @@ const appendValidation = (list) => {
 
 const CreateUserOptions = ({ initialValues, extensionPoints }) => {
   // extend with our validation.
-  appendValidation(extensionPoints);
+  // appendValidation(extensionPoints);
 
   const [createEnabled, setCreateEnabled] = useState();
 
@@ -65,14 +66,15 @@ const CreateUserOptions = ({ initialValues, extensionPoints }) => {
               />;
             }}
           />
+          <InfoPopover
+            content={<FormattedMessage id="ui-tenant-settings.settings.saml.user.createMissingInfo" />}
+          />
         </Col>
       </Row>
       <DefaultUserProperties
         defaultUserProp="samlDefaultUser"
       />
-      <IdentityProviderProperties
-        defaultIdpProp="samlDefaultIdp"
-      />
+      <IdentityProviderProperties />
     </Accordion>
   );
 };

@@ -6,6 +6,8 @@ import { Field } from 'react-final-form';
 import {
   Button,
   Col,
+  InfoPopover,
+  MessageBanner,
   Pane,
   Row,
   Select,
@@ -13,7 +15,7 @@ import {
   PaneFooter,
 } from '@folio/stripes/components';
 import stripesFinalForm from '@folio/stripes/final-form';
-import { IfPermission } from '@folio/stripes/core';
+// import { IfPermission } from '@folio/stripes/core';
 
 import CreateUserOptions from './CreateUserOptions';
 
@@ -22,7 +24,6 @@ import styles from './SSOSettings.css';
 const extensionPoints = [];
 const validate = values => {
   const errors = {};
-
   if (!values.samlBinding) {
     errors.samlBinding = <FormattedMessage id="ui-tenant-settings.settings.saml.validate.binding" />;
   }
@@ -47,7 +48,7 @@ class SamlForm extends React.Component {
     pristine: PropTypes.bool,
     submitting: PropTypes.bool,
     initialValues: PropTypes.object.isRequired, // eslint-disable-line react/no-unused-prop-types
-    values: PropTypes.object,
+    // values: PropTypes.object,
     optionLists: PropTypes.shape({
       identifierOptions: PropTypes.arrayOf(PropTypes.object),
       samlBindingOptions: PropTypes.arrayOf(PropTypes.object),
@@ -90,7 +91,7 @@ class SamlForm extends React.Component {
       optionLists,
       label,
       validateIdpUrl,
-      values,
+      // values,
     } = this.props;
 
     const identifierOptions = (optionLists.identifierOptions || []).map(i => (
@@ -127,10 +128,20 @@ class SamlForm extends React.Component {
           paneTitle={label}
           footer={footer}
         >
+          <MessageBanner className={styles.bottomMargin}>
+            <FormattedMessage id="ui-tenant-settings.settings.ssoSettings.help" />
+          </MessageBanner>
           <Row>
             <Col xs={12} id="fill_idpUrl">
               <Field
-                label={<FormattedMessage id="ui-tenant-settings.settings.saml.idpUrl" />}
+                label={
+                <>
+                  <FormattedMessage id="ui-tenant-settings.settings.saml.metadataUrl" />
+                  <InfoPopover
+                    content={<FormattedMessage id="ui-tenant-settings.settings.saml.metadataUrlInfo" />}
+                  />
+                </>
+                }
                 name="idpUrl"
                 id="samlconfig_idpUrl"
                 component={TextField}
@@ -138,7 +149,7 @@ class SamlForm extends React.Component {
                 fullWidth
                 validate={validateIdpUrl}
               />
-              <div hidden={!this.props.initialValues.metadataInvalidated}>
+              {/* <div hidden={!this.props.initialValues.metadataInvalidated}>
                 <FormattedMessage id="ui-tenant-settings.settings.saml.idpUrlChanged" />
               </div>
               <IfPermission perm="login-saml.all">
@@ -149,7 +160,7 @@ class SamlForm extends React.Component {
                 >
                   <FormattedMessage id="ui-tenant-settings.settings.saml.downloadMetadata" />
                 </Button>
-              </IfPermission>
+              </IfPermission> */}
             </Col>
           </Row>
           <Row>

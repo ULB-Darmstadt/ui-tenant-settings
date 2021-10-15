@@ -11,6 +11,7 @@ import {
 
 const CustomTextField = ({ input, label, id, required }) => {
   const { values } = useFormState();
+
   const attr = {
     disabled: !values.userCreateMissing,
     required: (required && values.userCreateMissing)
@@ -50,8 +51,9 @@ const PropertyCollectionSet = ({ defaultUserProp, name }) => {
         name={`${defaultUserProp}.${name}Default`}
         id={`saml_${name}Default`}
         component={CustomTextField}
-        required
         fullWidth
+        required
+        // validate={validate}
       />
     </Col>
   </>;

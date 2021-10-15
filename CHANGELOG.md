@@ -1,9 +1,23 @@
 # Change history for ui-tenant-settings
 
-## (6.1.1) IN PROGRESS
-* [UITEN-180](https://issues.folio.org/browse/UITEN-180) The Remote storage section is not displayed in the General Information pane
-* [UITEN-170](https://issues.folio.org/browse/UITEN-170) Include missing staff-slips permission in service-points pset
+## IN PROGRESS
+
+## [7.0.0](https://github.com/folio-org/ui-tenant-settings/tree/v7.0.0)(2021-09-31)
+[Full Changelog](https://github.com/folio-org/ui-tenant-settings/compare/v6.1.2...v7.0.0)
+
 * [UITEN-181](https://issues.folio.org/browse/UITEN-181) Set numbering system independently of locale
+* [UITEN-178](https://issues.folio.org/browse/UITEN-178) Permission sets should avoid ".all" permissions
+* [UITEN-183](https://issues.folio.org/browse/UITEN-183) Increment stripes to v7
+
+## (6.1.2)(https://github.com/folio-org/ui-tenant-settings/tree/v6.1.2)(2021-08-09)
+[Full Changelog](https://github.com/folio-org/ui-tenant-settings/compare/v6.1.1...v6.1.2)
+
+* [UITEN-170](https://issues.folio.org/browse/UITEN-170) Include missing staff-slips permission in service-points pset
+
+## (6.1.1)(https://github.com/folio-org/ui-tenant-settings/tree/v6.1.1)(2021-07-20)
+[Full Changelog](https://github.com/folio-org/ui-tenant-settings/compare/v6.1.0...v6.1.1)
+
+* [UITEN-180](https://issues.folio.org/browse/UITEN-180) The Remote storage section is not displayed in the General Information pane
 
 ## [6.1.0](https://github.com/folio-org/ui-tenant-settings/tree/v6.1.0)(2021-06-11)
 [Full Changelog](https://github.com/folio-org/ui-tenant-settings/compare/v6.0.0...v6.1.0)

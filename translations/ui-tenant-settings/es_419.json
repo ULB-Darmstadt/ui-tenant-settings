@@ -138,13 +138,13 @@
     "permission.settings.sso": "Configuración (Tenant): puede mantener la configuración de SSO",
     "permission.settings.location": "Configuración (Tenant): Puede crear, editar y eliminar localizaciones",
     "permission.settings.servicepoints": "Configuración (Tenant):  Puede crear, editar y eliminar puntos de servicio",
-    "settings.location.remotes.remote": "Remote storage",
-    "settings.location.remotes.no": "No (default)",
-    "settings.location.remotes.loading": "loading...",
+    "settings.location.remotes.remote": "Almacenamiento remoto",
+    "settings.location.remotes.no": "No (valor predeterminado)",
+    "settings.location.remotes.loading": "Cargando...",
     "settings.location.remotes.readonly": "can only be changed when there are no permanent holdings or items associated with this location",
-    "settings.location.remotes.failed": "Failed to load",
-    "settings.bursarExports": "Bursar exports",
+    "settings.location.remotes.failed": "Falló al cargar",
+    "settings.bursarExports": "Exportaciones de tesorería",
     "permission.settings.bursar-exports": "Configuración (Tenant): Administrar Bursar",
-    "settings.location.locations.remoteStorage": "Remote storage",
-    "settings.bursarExports.notAvailable": "No plugin available!"
+    "settings.location.locations.remoteStorage": "Almacenamiento remoto",
+    "settings.bursarExports.notAvailable": "No hay plugin disponible!"
 }

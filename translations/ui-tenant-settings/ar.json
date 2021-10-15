@@ -84,7 +84,7 @@
     "settings.servicePoints.noLocationsFound": "لم يتم العثور على مواقع",
     "meta.title": "المستأجر",
     "settings.index.paneTitle": "المستأجر",
-    "settings.location.locations.missingSelection": "يرجى تحديد مؤسسة ، وحرم جامعي ومكتبة للمتابعة.",
+    "settings.location.locations.missingSelection": "يرجى تحديد مؤسسة، وحرم جامعي ومكتبة للمتابعة.",
     "settings.location.locations.servicePoints": "نقاط الخدمة",
     "settings.location.locations.primary": "الرئيسي",
     "settings.servicePoints.disallowDeleteServicePoint": "لا يمكن حذف نقطة الخدمة",

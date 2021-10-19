@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'react-final-form';
-
 import {
   Button,
   Col,
@@ -44,7 +43,7 @@ class SamlForm extends React.Component {
   static propTypes = {
     validateIdpUrl: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    reset: PropTypes.func,
+    // reset: PropTypes.func,
     pristine: PropTypes.bool,
     submitting: PropTypes.bool,
     initialValues: PropTypes.object.isRequired, // eslint-disable-line react/no-unused-prop-types
@@ -64,6 +63,7 @@ class SamlForm extends React.Component {
       }),
     }),
     label: PropTypes.node,
+    stripes: PropTypes.object.isRequired,
   };
 
   updateMetadataInvalidated = () => {
@@ -71,7 +71,7 @@ class SamlForm extends React.Component {
     this.forceUpdate();
   }
 
-  downloadMetadata = () => {
+  /* downloadMetadata = () => {
     this.props.parentMutator.downloadFile.reset();
     this.props.parentMutator.downloadFile.GET().then((result) => {
       const anchor = document.createElement('a');
@@ -80,7 +80,7 @@ class SamlForm extends React.Component {
       anchor.click();
       this.updateMetadataInvalidated();
     });
-  }
+  } */
 
   render() {
     const {
@@ -90,9 +90,12 @@ class SamlForm extends React.Component {
       initialValues,
       optionLists,
       label,
+      stripes,
       validateIdpUrl,
       // values,
     } = this.props;
+
+    const downloadMetadataUrl = `${stripes.okapi.url}/_/invoke/${stripes.okapi.tenant}/saml/metadata`;
 
     const identifierOptions = (optionLists.identifierOptions || []).map(i => (
       { id: i.key, label: i.label, value: i.key, selected: initialValues.userProperty === i.key }
@@ -130,17 +133,21 @@ class SamlForm extends React.Component {
         >
           <MessageBanner className={styles.bottomMargin}>
             <FormattedMessage id="ui-tenant-settings.settings.ssoSettings.help" />
+            <br />
+            <br />
+            <FormattedMessage id="ui-tenant-settings.settings.ssoSettings.helpUrl" />
+            <a href={downloadMetadataUrl} className={styles.link} rel="noopener noreferrer" target="_blank">{downloadMetadataUrl}</a>
           </MessageBanner>
           <Row>
             <Col xs={12} id="fill_idpUrl">
               <Field
                 label={
-                <>
-                  <FormattedMessage id="ui-tenant-settings.settings.saml.metadataUrl" />
-                  <InfoPopover
-                    content={<FormattedMessage id="ui-tenant-settings.settings.saml.metadataUrlInfo" />}
-                  />
-                </>
+                  <>
+                    <FormattedMessage id="ui-tenant-settings.settings.saml.metadataUrl" />
+                    <InfoPopover
+                      content={<FormattedMessage id="ui-tenant-settings.settings.saml.metadataUrlInfo" />}
+                    />
+                  </>
                 }
                 name="idpUrl"
                 id="samlconfig_idpUrl"

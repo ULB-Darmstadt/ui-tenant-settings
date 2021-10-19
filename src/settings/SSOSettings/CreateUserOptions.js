@@ -29,7 +29,7 @@ const appendValidation = (list) => {
 
 const CreateUserOptions = ({ initialValues, extensionPoints }) => {
   // extend with our validation.
-  // appendValidation(extensionPoints);
+  appendValidation(extensionPoints);
 
   const [createEnabled, setCreateEnabled] = useState();
 

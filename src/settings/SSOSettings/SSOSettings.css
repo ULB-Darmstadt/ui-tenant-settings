@@ -5,3 +5,12 @@
 .bottomMargin {
   margin-bottom: 20px;
 }
+
+.link {
+  color: #FFF;
+  /* font-weight: var(--text-weight-bold); */
+}
+
+.link:hover {
+  color: #0066CC;
+}

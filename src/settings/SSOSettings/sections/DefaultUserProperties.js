@@ -34,6 +34,16 @@ const CustomROTextField = ({ input, label, id, required }) => {
   />;
 };
 
+const validate = value => {
+  const blankString = /^\s+$/;
+  if ((value && !blankString.test(value)) || value === false || value === 0) {
+    console.log('NO validation error ', value);
+    return undefined;
+  }
+  console.log('validation error ', value);
+  return <FormattedMessage id="stripes-core.label.missingRequiredField" />;
+};
+
 const PropertyCollectionSet = ({ defaultUserProp, name }) => {
   return <>
     <Col key={`saml_${name}Attribute`} xs={12} md={6}>
@@ -53,7 +63,7 @@ const PropertyCollectionSet = ({ defaultUserProp, name }) => {
         component={CustomTextField}
         fullWidth
         required
-        // validate={validate}
+        validate={validate}
       />
     </Col>
   </>;
@@ -95,7 +105,7 @@ const DefaultUserProperties = ({ defaultUserProp }) => {
             fullWidth
           />
         </Col>
-        { propertySets.map(property => <PropertyCollectionSet key={`${property}Set`} defaultUserProp={defaultUserProp} name={property} />) }
+        {propertySets.map(property => <PropertyCollectionSet key={`${property}Set`} defaultUserProp={defaultUserProp} name={property} />)}
       </Row>
     </>
   );

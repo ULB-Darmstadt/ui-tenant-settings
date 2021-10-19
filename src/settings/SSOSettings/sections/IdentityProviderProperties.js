@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { FieldArray } from 'react-final-form-arrays';
 import { Field, useFormState } from 'react-final-form';
@@ -7,7 +6,7 @@ import {
   Button,
   Col,
   Headline,
-  RepeatableField,
+  IconButton,
   Row,
   Select,
   Selection,
@@ -31,7 +30,7 @@ const PatronGroupSelection = ({ defaultIdpProp, label, index }) => {
   useEffect(() => {
     // in the selectedIdentityProviders array, fill the patronGroup field with the last selected value
     if (defaultIdpProp != 'homeInstitution' && index > 0) {
-      setDefaultPatronGroup(values.selectedIdentityProviders[index - 1].patronGroup);
+      setDefaultPatronGroup(values.selectedIdentityProviders[index - 1]?.patronGroup);
     }
   });
 
@@ -47,7 +46,7 @@ const PatronGroupSelection = ({ defaultIdpProp, label, index }) => {
   const attr = {
     disabled: !values['userCreateMissing'],
     required: (values['userCreateMissing'] && patronGroupRequired),
-    label: label ? <FormattedMessage id="ui-tenant-settings.settings.saml.defaultUser.patronGroup" /> : undefined
+    label: label ? <FormattedMessage id="ui-tenant-settings.settings.saml.idp.homeInstitutionPatronGroup" /> : undefined
   };
 
   const { data = {} } = useQuery(
@@ -72,6 +71,7 @@ const PatronGroupSelection = ({ defaultIdpProp, label, index }) => {
   return <Field
     name={`${defaultIdpProp}.patronGroup`}
     id="saml_patronGroup"
+    initialValue={defaultPatronGroup}
     component={Select}
     fullWidth
     dataOptions={dataOptions}
@@ -269,41 +269,55 @@ const IdentityProviderProperties = () => {
         <Col md xs={12}><PatronGroupSelection defaultIdpProp='homeInstitution' label /></Col>
       </Row>
       {source?.length > 1 ?
-        <FieldArray
-          addLabel={<FormattedMessage id="ui-tenant-settings.settings.saml.idp.addIdentityProvider" />}
-          component={RepeatableField}
-          name="selectedIdentityProviders"
-          onAdd={fields => fields.push('')}
-          // onRemove={(fields, index) => fields.remove(index)}
-          // fields: selectedIdentityProviders[index] (= $name[$index])
-          renderField={(_fields, index) => (
-            <>
-              {index == 0 ? renderHeadline() : null}
-              <Row>
-                <Col md xs={12}>
-                  <FormattedMessage id="ui-tenant-settings.settings.saml.idp.placeholderText">
-                    {placeholder => (
-                      <Field
-                        component={Selection}
-                        dataOptions={dataOptions}
-                        disabled={!values['userCreateMissing']}
-                        // name={`${fields}.id`}
-                        name={`selectedIdentityProviders[${index}].id`}
-                        id={`saml_selectedIdentityProviders[${index}].id`}
-                        onFilter={filterOptions}
-                        placeholder={placeholder}
-                        fullWidth
-                      />
-                    )}
-                  </FormattedMessage>
-                </Col>
-                <Col md xs={12}><PatronGroupSelection defaultIdpProp={`selectedIdentityProviders[${index}]`} index={index} /></Col>
-              </Row>
-            </>
+        <FieldArray name="selectedIdentityProviders">
+          {({ fields }) => (
+            <div>
+              {fields.map((name, index) => (
+                <div key={name}>
+                  <>
+                    {index == 0 ? renderHeadline() : null}
+                    <Row>
+                      <Col md={6} xs={12}>
+                        <FormattedMessage id="ui-tenant-settings.settings.saml.idp.placeholderText">
+                          {placeholder => (
+                            <Field
+                              component={Selection}
+                              dataOptions={dataOptions}
+                              disabled={!values['userCreateMissing']}
+                              name={`selectedIdentityProviders[${index}].id`}
+                              id={`saml_selectedIdentityProviders[${index}].id`}
+                              onFilter={filterOptions}
+                              placeholder={placeholder}
+                              fullWidth
+                            />
+                          )}
+                        </FormattedMessage>
+                      </Col>
+                      <Col md={5} xs={12}><PatronGroupSelection defaultIdpProp={`selectedIdentityProviders[${index}]`} index={index} /></Col>
+                      <Col md={1} xs={12}>
+                        <IconButton
+                          icon="trash"
+                          onClick={() => fields.remove(index)}
+                        />
+                      </Col>
+                    </Row>
+                  </>
+                </div>
+              ))}
+              <Button
+                id='identity-provider-add-button'
+                onClick={() => fields.push()}
+              >
+                <FormattedMessage id="ui-tenant-settings.settings.saml.idp.addIdentityProvider" />
+              </Button>
+            </div>
           )}
-        />
+        </FieldArray>
         :
-        <Button disabled>
+        <Button
+          disabled
+          id='identity-provider-add-button'
+        >
           <FormattedMessage id="ui-tenant-settings.settings.saml.idp.addIdentityProvider" />
         </Button>
       }

@@ -9,14 +9,22 @@ import {
   TextField,
 } from '@folio/stripes/components';
 
-const CustomTextField = ({ input, label, id, required }) => {
+const validate = value => {
+  const blankString = /^\s+$/;
+  if ((value && !blankString.test(value)) || value === false || value === 0) {
+    return undefined;
+  }
+  return <FormattedMessage id="stripes-core.label.missingRequiredField" />;
+};
+
+const CustomTextField = ({ input, label, id, required, meta }) => {
   const { values } = useFormState();
 
   const attr = {
     disabled: !values.userCreateMissing,
     required: (required && values.userCreateMissing)
   };
-  return <TextField label={label} id={id} key={id} {...attr} {...input} />;
+  return <TextField label={label} id={id} key={id} {...attr} {...input} {...meta} />;
 };
 
 const CustomROTextField = ({ input, label, id, required }) => {
@@ -32,16 +40,6 @@ const CustomROTextField = ({ input, label, id, required }) => {
     value={values.samlAttribute}
     {...inputProps}
   />;
-};
-
-const validate = value => {
-  const blankString = /^\s+$/;
-  if ((value && !blankString.test(value)) || value === false || value === 0) {
-    console.log('NO validation error ', value);
-    return undefined;
-  }
-  console.log('validation error ', value);
-  return <FormattedMessage id="stripes-core.label.missingRequiredField" />;
 };
 
 const PropertyCollectionSet = ({ defaultUserProp, name }) => {

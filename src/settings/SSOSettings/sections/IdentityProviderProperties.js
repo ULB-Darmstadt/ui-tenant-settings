@@ -14,6 +14,14 @@ import {
 import { useOkapiKy } from '@folio/stripes/core';
 import { useQuery } from 'react-query';
 
+const validateObject = (formValue = {}) => {
+  const { ...value } = formValue;
+  if (Object.keys(value).length === 0) {
+    return <FormattedMessage id="stripes-core.label.missingRequiredField" />;
+  }
+  return undefined;
+};
+
 const PARAMS_GROUPS = {
   limit: 10000,
   query: 'cql.allRecords=1 sortby group'
@@ -42,6 +50,7 @@ const PatronGroupSelection = ({ defaultIdpProp, label, index }) => {
       setPatronGroupRequired(false);
     }
   });
+
 
   const attr = {
     disabled: !values['userCreateMissing'],
@@ -77,6 +86,7 @@ const PatronGroupSelection = ({ defaultIdpProp, label, index }) => {
     dataOptions={dataOptions}
     defaultValue={defaultPatronGroup}
     aria-required="true"
+    validate={patronGroupRequired && validateObject}
     {...attr}
   />;
 };
@@ -94,6 +104,12 @@ const renderHeadline = () => {
 const IdentityProviderProperties = () => {
 
   const { values } = useFormState();
+  // const { values, dirtyFields, isDirty, isValid } = useFormState();
+  // console.log('values: ', values);
+  // console.log('dirtyFields: ', dirtyFields);
+  // console.log('isDirty: ', isDirty);
+  // console.log('isValid: ', isValid);
+
   const ky = useOkapiKy();
 
   const idpHome = [
@@ -289,6 +305,8 @@ const IdentityProviderProperties = () => {
                               onFilter={filterOptions}
                               placeholder={placeholder}
                               fullWidth
+                              required
+                              validate={validateObject}
                             />
                           )}
                         </FormattedMessage>
@@ -305,6 +323,7 @@ const IdentityProviderProperties = () => {
                 </div>
               ))}
               <Button
+                disabled={!values['userCreateMissing']}
                 id='identity-provider-add-button'
                 onClick={() => fields.push()}
               >

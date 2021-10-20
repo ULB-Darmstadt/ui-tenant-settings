@@ -20,7 +20,6 @@ import CreateUserOptions from './CreateUserOptions';
 
 import styles from './SSOSettings.css';
 
-const extensionPoints = [];
 const validate = values => {
   const errors = {};
   if (!values.samlBinding) {
@@ -32,9 +31,6 @@ const validate = values => {
   if (!values.userProperty) {
     errors.userProperty = <FormattedMessage id="ui-tenant-settings.settings.saml.validate.userProperty" />;
   }
-
-  // Decorate with the custom validators
-  Object.assign(errors, ...extensionPoints.map(f => f(values)));
 
   return errors;
 };
@@ -211,7 +207,6 @@ class SamlForm extends React.Component {
           <Row>
             <Col id="saml_createuser_settings">
               <CreateUserOptions
-                extensionPoints={extensionPoints}
                 initialValues={this.props.initialValues}
               />
             </Col>

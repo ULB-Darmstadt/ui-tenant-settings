@@ -8,9 +8,9 @@
 
 .link {
   color: #FFF;
-  /* font-weight: var(--text-weight-bold); */
 }
 
 .link:hover {
-  color: #0066CC;
+  color: #BDD5ED;
+  text-decoration-color: #BDD5ED
 }

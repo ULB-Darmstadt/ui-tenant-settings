@@ -13,24 +13,7 @@ import {
 import DefaultUserProperties from './sections/DefaultUserProperties';
 import IdentityProviderProperties from './sections/IdentityProviderProperties';
 
-const extended = false;
-const appendValidation = (list) => {
-  if (extended === false) {
-    //    list.push(({userCreateMissing}) => {
-    //      const errors = {};
-    //      if (userCreateMissing == true) {
-    //        // Validate and add messages.
-    //        errors.samlBinding = <FormattedMessage id="ui-tenant-settings.settings.saml.validate.binding" />;
-    //      }
-    //      return errors;
-    //    });
-  }
-};
-
-const CreateUserOptions = ({ initialValues, extensionPoints }) => {
-  // extend with our validation.
-  appendValidation(extensionPoints);
-
+const CreateUserOptions = ({ initialValues }) => {
   const [createEnabled, setCreateEnabled] = useState();
 
   useEffect(() => {
@@ -81,9 +64,6 @@ const CreateUserOptions = ({ initialValues, extensionPoints }) => {
 
 CreateUserOptions.propTypes = {
   initialValues: PropTypes.object.isRequired,
-  extensionPoints: PropTypes.arrayOf(
-    PropTypes.func
-  ).isRequired,
 };
 
 export default CreateUserOptions;

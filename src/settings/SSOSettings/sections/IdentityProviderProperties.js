@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { FieldArray } from 'react-final-form-arrays';
-import { Field, useFormState } from 'react-final-form';
+import { Field, useForm, useFormState } from 'react-final-form';
 import {
   Button,
   Col,
@@ -84,9 +84,9 @@ const PatronGroupSelection = ({ defaultIdpProp, label, index }) => {
     component={Select}
     fullWidth
     dataOptions={dataOptions}
-    defaultValue={defaultPatronGroup}
+    initialValue={defaultPatronGroup}
     aria-required="true"
-    validate={patronGroupRequired && validateObject}
+    validate={values['userCreateMissing'] ? validateObject : null}
     {...attr}
   />;
 };
@@ -100,15 +100,11 @@ const renderHeadline = () => {
       </Row>
     </Headline>
   );
-}
+};
+
 const IdentityProviderProperties = () => {
 
   const { values } = useFormState();
-  // const { values, dirtyFields, isDirty, isValid } = useFormState();
-  // console.log('values: ', values);
-  // console.log('dirtyFields: ', dirtyFields);
-  // console.log('isDirty: ', isDirty);
-  // console.log('isValid: ', isValid);
 
   const ky = useOkapiKy();
 
@@ -252,7 +248,7 @@ const IdentityProviderProperties = () => {
     }];
 
   const { data: { idps = [] } = {} } = useQuery(
-    ['idpValues'],
+    ['sso', 'idpValues'],
     () => ky('saml/configuration/idps-all').json()
   );
 
@@ -279,6 +275,7 @@ const IdentityProviderProperties = () => {
             name="homeInstitution.id"
             id="saml_homeInstitution"
             onFilter={filterOptions}
+            validate={values['userCreateMissing'] ? validateObject : null}
             fullWidth
           />
         </Col>
@@ -306,7 +303,7 @@ const IdentityProviderProperties = () => {
                               placeholder={placeholder}
                               fullWidth
                               required
-                              validate={validateObject}
+                              validate={values['userCreateMissing'] ? validateObject : null}
                             />
                           )}
                         </FormattedMessage>

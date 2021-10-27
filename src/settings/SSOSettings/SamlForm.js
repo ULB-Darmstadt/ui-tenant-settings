@@ -11,14 +11,40 @@ import {
   Row,
   Select,
   TextField,
+  TextLink,
   PaneFooter,
 } from '@folio/stripes/components';
+
 import stripesFinalForm from '@folio/stripes/final-form';
-// import { IfPermission } from '@folio/stripes/core';
 
 import CreateUserOptions from './CreateUserOptions';
 
 import styles from './SSOSettings.css';
+
+const propTypes = {
+  validateIdpUrl: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  pristine: PropTypes.bool,
+  submitting: PropTypes.bool,
+  initialValues: PropTypes.object.isRequired, // eslint-disable-line react/no-unused-prop-types
+  optionLists: PropTypes.shape({
+    identifierOptions: PropTypes.arrayOf(PropTypes.object),
+    samlBindingOptions: PropTypes.arrayOf(PropTypes.object),
+  }),
+  parentMutator: PropTypes.shape({ // eslint-disable-line react/no-unused-prop-types
+    urlValidator: PropTypes.shape({
+      reset: PropTypes.func.isRequired,
+      GET: PropTypes.func.isRequired,
+    }).isRequired,
+    downloadFile: PropTypes.shape({
+      GET: PropTypes.func.isRequired,
+      reset: PropTypes.func.isRequired,
+    }),
+  }),
+  label: PropTypes.node,
+  stripes: PropTypes.object.isRequired,
+  // values: PropTypes.object,
+};
 
 const validate = values => {
   const errors = {};
@@ -35,187 +61,132 @@ const validate = values => {
   return errors;
 };
 
-class SamlForm extends React.Component {
-  static propTypes = {
-    validateIdpUrl: PropTypes.func.isRequired,
-    handleSubmit: PropTypes.func.isRequired,
-    // reset: PropTypes.func,
-    pristine: PropTypes.bool,
-    submitting: PropTypes.bool,
-    initialValues: PropTypes.object.isRequired, // eslint-disable-line react/no-unused-prop-types
-    // values: PropTypes.object,
-    optionLists: PropTypes.shape({
-      identifierOptions: PropTypes.arrayOf(PropTypes.object),
-      samlBindingOptions: PropTypes.arrayOf(PropTypes.object),
-    }),
-    parentMutator: PropTypes.shape({ // eslint-disable-line react/no-unused-prop-types
-      urlValidator: PropTypes.shape({
-        reset: PropTypes.func.isRequired,
-        GET: PropTypes.func.isRequired,
-      }).isRequired,
-      downloadFile: PropTypes.shape({
-        GET: PropTypes.func.isRequired,
-        reset: PropTypes.func.isRequired,
-      }),
-    }),
-    label: PropTypes.node,
-    stripes: PropTypes.object.isRequired,
-  };
+const SamlForm = ({
+  handleSubmit,
+  pristine,
+  submitting,
+  initialValues,
+  optionLists,
+  label,
+  stripes,
+  // values,
+  validateIdpUrl,
+}) => {
+  const downloadMetadataUrl = `${stripes.okapi.url}/_/invoke/${stripes.okapi.tenant}/saml/metadata`;
 
-  updateMetadataInvalidated = () => {
-    this.props.initialValues.metadataInvalidated = false;
-    this.forceUpdate();
-  }
+  const identifierOptions = (optionLists.identifierOptions || []).map(i => (
+    { id: i.key, label: i.label, value: i.key, selected: initialValues.userProperty === i.key }
+  ));
 
-  /* downloadMetadata = () => {
-    this.props.parentMutator.downloadFile.reset();
-    this.props.parentMutator.downloadFile.GET().then((result) => {
-      const anchor = document.createElement('a');
-      anchor.href = `data:text/plain;base64,${result.fileContent}`;
-      anchor.download = 'sp-metadata.xml';
-      anchor.click();
-      this.updateMetadataInvalidated();
-    });
-  } */
+  const samlBindingOptions = optionLists.samlBindingOptions.map(i => (
+    { id: i.key, label: i.label, value: i.key, selected: initialValues.samlBinding === i.key }
+  ));
 
-  render() {
-    const {
-      handleSubmit,
-      pristine,
-      submitting,
-      initialValues,
-      optionLists,
-      label,
-      stripes,
-      validateIdpUrl,
-      // values,
-    } = this.props;
-
-    const downloadMetadataUrl = `${stripes.okapi.url}/_/invoke/${stripes.okapi.tenant}/saml/metadata`;
-
-    const identifierOptions = (optionLists.identifierOptions || []).map(i => (
-      { id: i.key, label: i.label, value: i.key, selected: initialValues.userProperty === i.key }
-    ));
-
-    const samlBindingOptions = optionLists.samlBindingOptions.map(i => (
-      { id: i.key, label: i.label, value: i.key, selected: initialValues.samlBinding === i.key }
-    ));
-
-    const footer = (
-      <PaneFooter
-        renderEnd={(
-          <Button
-            type="submit"
-            buttonStyle="primary"
-            disabled={(pristine || submitting)}
-          >
-            <FormattedMessage id="stripes-core.button.save" />
-          </Button>
-        )}
-      />
-    );
-
-    return (
-      <form
-        id="form-saml"
-        onSubmit={handleSubmit}
-        className={styles.samlForm}
-      >
-        <Pane
-          defaultWidth="fill"
-          fluidContentWidth
-          paneTitle={label}
-          footer={footer}
+  const footer = (
+    <PaneFooter
+      renderEnd={(
+        <Button
+          type="submit"
+          buttonStyle="primary"
+          disabled={(pristine || submitting)}
         >
-          <MessageBanner className={styles.bottomMargin}>
+          <FormattedMessage id="stripes-core.button.save" />
+        </Button>
+      )}
+    />
+  );
+
+  return (
+    <form
+      id="form-saml"
+      onSubmit={handleSubmit}
+      className={styles.samlForm}
+    >
+      <Pane
+        defaultWidth="fill"
+        fluidContentWidth
+        paneTitle={label}
+        footer={footer}
+      >
+        <MessageBanner className={styles.bottomMargin}>
+          <p>
             <FormattedMessage id="ui-tenant-settings.settings.ssoSettings.help" />
-            <br />
-            <br />
-            <FormattedMessage id="ui-tenant-settings.settings.ssoSettings.helpUrl" />
-            <a href={downloadMetadataUrl} className={styles.link} rel="noopener noreferrer" target="_blank">{downloadMetadataUrl}</a>
-          </MessageBanner>
-          <Row>
-            <Col xs={12} id="fill_idpUrl">
-              <Field
-                label={
-                  <>
-                    <FormattedMessage id="ui-tenant-settings.settings.saml.metadataUrl" />
-                    <InfoPopover
-                      content={<FormattedMessage id="ui-tenant-settings.settings.saml.metadataUrlInfo" />}
-                    />
-                  </>
-                }
-                name="idpUrl"
-                id="samlconfig_idpUrl"
-                component={TextField}
-                required
-                fullWidth
-                validate={validateIdpUrl}
-              />
-              {/* <div hidden={!this.props.initialValues.metadataInvalidated}>
-                <FormattedMessage id="ui-tenant-settings.settings.saml.idpUrlChanged" />
-              </div>
-              <IfPermission perm="login-saml.all">
-                <Button
-                  id="download-metadata-button"
-                  onClick={this.downloadMetadata}
-                  disabled={!values.idpUrl || !pristine}
-                >
-                  <FormattedMessage id="ui-tenant-settings.settings.saml.downloadMetadata" />
-                </Button>
-              </IfPermission> */}
-            </Col>
-          </Row>
-          <Row>
-            <Col id="select_samlBinding" xs={12} md={6}>
-              <Field
-                label={<FormattedMessage id="ui-tenant-settings.settings.saml.binding" />}
-                name="samlBinding"
-                id="samlconfig_samlBinding"
-                placeholder="---"
-                component={Select}
-                dataOptions={samlBindingOptions}
-                fullWidth
-                required
-              />
-            </Col>
-            <Col id="fill_attribute" xs={12} md={6}>
-              <Field
-                label={<FormattedMessage id="ui-tenant-settings.settings.saml.attribute" />}
-                name="samlAttribute"
-                id="samlconfig_samlAttribute"
-                component={TextField}
-                required
-                fullWidth
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col id="select_userProperty" xs={12} md={6}>
-              <Field
-                label={<FormattedMessage id="ui-tenant-settings.settings.saml.userProperty" />}
-                name="userProperty"
-                id="samlconfig_userProperty"
-                placeholder="---"
-                component={Select}
-                dataOptions={identifierOptions}
-                fullWidth
-                required
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col id="saml_createuser_settings">
-              <CreateUserOptions
-                initialValues={this.props.initialValues}
-              />
-            </Col>
-          </Row>
-        </Pane>
-      </form>
-    );
-  }
-}
+          </p>
+          <FormattedMessage id="ui-tenant-settings.settings.ssoSettings.helpUrl" />
+          <br />
+          <TextLink href={downloadMetadataUrl} className={styles.link} rel="noopener noreferrer" target="_blank">{downloadMetadataUrl}</TextLink>
+        </MessageBanner>
+        <Row>
+          <Col xs={12} id="fill_idpUrl">
+            <Field
+              label={
+                <>
+                  <FormattedMessage id="ui-tenant-settings.settings.saml.metadataUrl" />
+                  <InfoPopover
+                    content={<FormattedMessage id="ui-tenant-settings.settings.saml.metadataUrlInfo" />}
+                  />
+                </>
+              }
+              name="idpUrl"
+              id="samlconfig_idpUrl"
+              component={TextField}
+              required
+              fullWidth
+              validate={validateIdpUrl}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col id="select_samlBinding" xs={12} md={6}>
+            <Field
+              label={<FormattedMessage id="ui-tenant-settings.settings.saml.binding" />}
+              name="samlBinding"
+              id="samlconfig_samlBinding"
+              placeholder="---"
+              component={Select}
+              dataOptions={samlBindingOptions}
+              fullWidth
+              required
+            />
+          </Col>
+          <Col id="fill_attribute" xs={12} md={6}>
+            <Field
+              label={<FormattedMessage id="ui-tenant-settings.settings.saml.attribute" />}
+              name="samlAttribute"
+              id="samlconfig_samlAttribute"
+              component={TextField}
+              required
+              fullWidth
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col id="select_userProperty" xs={12} md={6}>
+            <Field
+              label={<FormattedMessage id="ui-tenant-settings.settings.saml.userProperty" />}
+              name="userProperty"
+              id="samlconfig_userProperty"
+              placeholder="---"
+              component={Select}
+              dataOptions={identifierOptions}
+              fullWidth
+              required
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col id="saml_createuser_settings">
+            <CreateUserOptions
+              initialValues={initialValues}
+            />
+          </Col>
+        </Row>
+      </Pane>
+    </form>
+  );
+};
+
+SamlForm.propTypes = propTypes;
 
 export default stripesFinalForm({
   validate,

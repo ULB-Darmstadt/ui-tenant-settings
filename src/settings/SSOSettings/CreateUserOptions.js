@@ -13,7 +13,7 @@ import {
 import DefaultUserProperties from './sections/DefaultUserProperties';
 import IdentityProviderProperties from './sections/IdentityProviderProperties';
 
-const CreateUserOptions = ({ initialValues }) => {
+const CreateUserOptions = ({ idps, initialValues }) => {
   const [createEnabled, setCreateEnabled] = useState();
 
   useEffect(() => {
@@ -24,7 +24,6 @@ const CreateUserOptions = ({ initialValues }) => {
 
   return (
     <Accordion
-      // closedByDefault={!createEnabled}
       id="CreateUserOptions"
       label={<FormattedMessage id="ui-tenant-settings.settings.saml.user.createMissingAccordion" />}
     >
@@ -57,12 +56,15 @@ const CreateUserOptions = ({ initialValues }) => {
       <DefaultUserProperties
         defaultUserProp="samlDefaultUser"
       />
-      <IdentityProviderProperties />
+      <IdentityProviderProperties
+        idps={idps}
+      />
     </Accordion>
   );
 };
 
 CreateUserOptions.propTypes = {
+  idps: PropTypes.arrayOf(PropTypes.object),
   initialValues: PropTypes.object.isRequired,
 };
 

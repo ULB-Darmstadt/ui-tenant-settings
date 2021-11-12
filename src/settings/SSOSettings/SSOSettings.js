@@ -62,7 +62,6 @@ class SSOSettings extends React.Component {
   constructor(props) {
     super(props);
 
-    this.validateIdpUrl = this.validateIdpUrl.bind(this);
     this.updateSettings = this.updateSettings.bind(this);
   }
 
@@ -85,31 +84,6 @@ class SSOSettings extends React.Component {
     });
   }
 
-  async validateIdpUrl(value) {
-    const { mutator: { urlValidator } } = this.props;
-
-    if (!value) {
-      return <FormattedMessage id="ui-tenant-settings.settings.saml.validate.fillIn" />;
-    }
-
-    const error = <FormattedMessage id="ui-tenant-settings.settings.saml.validate.idpUrl" />;
-    const params = { type: 'idpurl', value };
-
-    urlValidator.reset();
-
-    try {
-      const result = await urlValidator.GET({ params });
-
-      if (!result?.valid) {
-        return error;
-      }
-    } catch (err) {
-      return error;
-    }
-
-    return '';
-  }
-
   render() {
     const samlFormData = this.getConfig();
 
@@ -121,7 +95,6 @@ class SSOSettings extends React.Component {
           onSubmit={(record) => { this.updateSettings(record); }}
           optionLists={{ identifierOptions: patronIdentifierTypes, samlBindingOptions: samlBindingTypes }}
           parentMutator={this.props.mutator}
-          validateIdpUrl={this.validateIdpUrl}
           stripes={this.props.stripes}
         />
         <a // eslint-disable-line jsx-a11y/anchor-is-valid

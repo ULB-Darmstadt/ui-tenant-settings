@@ -24,7 +24,7 @@ const CustomTextField = ({ input, label, id, required, meta }) => {
     disabled: !values.userCreateMissing,
     required: (required && values.userCreateMissing)
   };
-  return <TextField label={label} id={id} key={id} {...attr} {...input} {...meta} />;
+  return <TextField label={label} id={id} key={id} meta={meta} input={input} {...attr} />;
 };
 
 const CustomROTextField = ({ input, label, id, required }) => {

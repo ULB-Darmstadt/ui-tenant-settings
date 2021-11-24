@@ -18,6 +18,7 @@ import { useOkapiKy } from '@folio/stripes/core';
 import { useQuery } from 'react-query';
 
 const validateObject = (formValue = {}) => {
+  // validate={(values['userCreateMissing'] && values.idpUrl !== undefined) ? validateObject : undefined}
   const { ...value } = formValue;
   if (Object.keys(value).length === 0) {
     return <FormattedMessage id="stripes-core.label.missingRequiredField" />;
@@ -39,18 +40,16 @@ const PatronGroupSelection = ({ defaultIdpProp, label, index }) => {
   const [patronGroupRequired, setPatronGroupRequired] = useState();
 
   useEffect(() => {
-    // in the selectedIdentityProviders array, fill the patronGroup field with the last selected value
-    if (defaultIdpProp != 'homeInstitution' && index > 0) {
-      setDefaultPatronGroup(values.selectedIdentityProviders[index - 1]?.patronGroup);
-    }
-  });
-
-  useEffect(() => {
     // patron group is a required field if identity provider field is filled
     if ((defaultIdpProp === 'homeInstitution' && values?.homeInstitution?.id) || (defaultIdpProp !== 'homeInstitution' && values?.selectedIdentityProviders[index]?.id)) {
       setPatronGroupRequired(true);
     } else {
       setPatronGroupRequired(false);
+    }
+
+    // in the selectedIdentityProviders array, fill the patronGroup field with the last selected value
+    if (defaultIdpProp != 'homeInstitution' && index > 0) {
+      setDefaultPatronGroup(values.selectedIdentityProviders[index - 1]?.patronGroup);
     }
   });
 
@@ -88,7 +87,7 @@ const PatronGroupSelection = ({ defaultIdpProp, label, index }) => {
     fullWidth
     dataOptions={dataOptions}
     aria-required="true"
-    // validate={(values['userCreateMissing'] && values.idpUrl !== undefined) ? validateObject : undefined}
+    validate={validateObject}
     {...attr}
   />;
 };
@@ -114,7 +113,7 @@ const IdentityProviderProperties = ({ idps }) => {
   })) || [];
 
   const filterOptions = (filterString, options) => (options.filter(o => new RegExp(filterString.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i').test(o.label)));
-  console.log(values['userCreateMissing'], values.idpUrl !== undefined, values?.homeInstitution?.id);
+
   return (
     <>
       <Headline size="large" margin="small"><FormattedMessage id="ui-tenant-settings.settings.saml.identityProviders" /></Headline>
@@ -128,7 +127,7 @@ const IdentityProviderProperties = ({ idps }) => {
             name="homeInstitution.id"
             id="saml_homeInstitution"
             onFilter={filterOptions}
-            // validate={(values['userCreateMissing'] && values.idpUrl !== undefined) ? validateObject : undefined}
+            validate={validateObject}
             required={values.idpUrl !== undefined}
             fullWidth
           />
@@ -154,10 +153,10 @@ const IdentityProviderProperties = ({ idps }) => {
                               name={`selectedIdentityProviders[${index}].id`}
                               id={`saml_selectedIdentityProviders[${index}].id`}
                               onFilter={filterOptions}
-                              placeholder={placeholder}
+                              placeholder={placeholder[0]}
                               fullWidth
                               required
-                            // validate={(values['userCreateMissing'] && values.idpUrl !== undefined) ? validateObject : undefined}
+                              validate={validateObject}
                             />
                           )}
                         </FormattedMessage>

@@ -70,15 +70,8 @@ const SamlForm = ({
   const closeDeleteConfirmationModal = () => setShowDeleteConfirmationModal(false);
 
   const [changeMetadataConfirm, setChangeMetadataConfirm] = useState(false);
-
   const [metadataUrl, setMetadataUrl] = useState();
   const debounceMetadataUrl = debounce(setMetadataUrl, 800);
-
-  useEffect(() => {
-    if (!metadataUrl && initialValues.idpUrl) {
-      setMetadataUrl(initialValues.idpUrl);
-    }
-  });
 
   const [valid, idps, isLoading] = useIdpUrlValues(metadataUrl);
 
@@ -86,12 +79,23 @@ const SamlForm = ({
   const [lastValidUrl, setLastValidUrl] = useState();
 
   useEffect(() => {
+    // this sets metadataUrl everytime it's unset
+    if (!metadataUrl && initialValues.idpUrl) {
+      setMetadataUrl(initialValues.idpUrl);
+    }
     if (valid === true) {
       if (changeMetadataConfirm === true) {
         setLastValidUrl(values.idpUrl);
       } else {
         setLastValidUrl(initialValues.idpUrl);
       }
+    }
+    if (isValidationPaused && !isLoading) {
+      resumeValidation();
+    }
+    if (changeMetadataConfirm === true) {
+      setIdpList(idps);
+      // console.log('setIdpList fired, changeMetadataConfirm', changeMetadataConfirm);
     }
   });
   // console.log('lastValidUrl', lastValidUrl, '\n valid', valid, '\n showDeleteConfirmationModal', showDeleteConfirmationModal, '\n changeMetadataConfirm', changeMetadataConfirm);
@@ -103,18 +107,6 @@ const SamlForm = ({
     }
   }, [idps, lastValidUrl]);
 
-  useEffect(() => {
-    if (isValidationPaused && !isLoading) {
-      resumeValidation();
-    }
-  });
-
-  useEffect(() => {
-    if (changeMetadataConfirm === true) {
-      setIdpList(idps);
-      // console.log('setIdpList fired, changeMetadataConfirm', changeMetadataConfirm);
-    }
-  });
   // service provider metadata download url
   const downloadSPMetadataUrl = `${stripes.okapi.url}/_/invoke/${stripes.okapi.tenant}/saml/metadata`;
 
@@ -177,7 +169,7 @@ const SamlForm = ({
               {({ input, meta }) => {
                 return (<TextField
                   {...input}
-                  error={meta && meta.touched && meta.error}
+                  error={(meta && meta.touched) ? meta.error : null}
                   label={
                     <>
                       <FormattedMessage id="ui-tenant-settings.settings.saml.metadataUrl" />
@@ -258,10 +250,10 @@ const SamlForm = ({
           closeDeleteConfirmationModal();
         }}
         onConfirm={() => {
-          closeDeleteConfirmationModal();
           setChangeMetadataConfirm(true);
           change('homeInstitution', null);
           change('selectedIdentityProviders', null);
+          closeDeleteConfirmationModal();
         }}
         open={showDeleteConfirmationModal}
       />

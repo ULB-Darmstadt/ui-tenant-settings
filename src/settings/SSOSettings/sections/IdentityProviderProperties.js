@@ -17,11 +17,16 @@ import {
 import { useOkapiKy } from '@folio/stripes/core';
 import { useQuery } from 'react-query';
 
-const validateObject = (formValue = {}) => {
-  // validate={(values['userCreateMissing'] && values.idpUrl !== undefined) ? validateObject : undefined}
-  const { ...value } = formValue;
-  if (Object.keys(value).length === 0) {
-    return <FormattedMessage id="stripes-core.label.missingRequiredField" />;
+const validateObject = (formValue = {}, allValues, meta) => {
+  // no patronGroup validation if automatic user creation is deactivated
+  if (meta.name.includes('.patronGroup') && !allValues.userCreateMissing) {
+    return undefined;
+  }
+  if (allValues.idpUrl !== undefined) {
+    const { ...value } = formValue;
+    if (Object.keys(value).length === 0) {
+      return <FormattedMessage id="stripes-core.label.missingRequiredField" />;
+    }
   }
   return undefined;
 };
@@ -48,14 +53,14 @@ const PatronGroupSelection = ({ defaultIdpProp, label, index }) => {
     }
 
     // in the selectedIdentityProviders array, fill the patronGroup field with the last selected value
-    if (defaultIdpProp != 'homeInstitution' && index > 0) {
+    if (defaultIdpProp != 'homeInstitution' && index > 0 && values['userCreateMissing']) {
       setDefaultPatronGroup(values.selectedIdentityProviders[index - 1]?.patronGroup);
     }
   });
 
 
   const attr = {
-    disabled: !values['userCreateMissing'],
+    disabled: (!values['userCreateMissing'] || !values['idpUrl']),
     required: (values['userCreateMissing'] && patronGroupRequired),
     label: label ? <FormattedMessage id="ui-tenant-settings.settings.saml.idp.homeInstitutionPatronGroup" /> : undefined
   };
@@ -106,6 +111,9 @@ const renderHeadline = () => {
 const IdentityProviderProperties = ({ idps }) => {
 
   const { values } = useFormState();
+  if (!values.idpUrl) {
+    idps = [];
+  }
 
   const dataOptions = idps?.map(idp => ({
     value: idp.id,
@@ -121,8 +129,8 @@ const IdentityProviderProperties = ({ idps }) => {
         <Col md xs={12}>
           <Field
             component={Selection}
+            disabled={!values.idpUrl}
             dataOptions={dataOptions}
-            disabled={!values['userCreateMissing']}
             label={<FormattedMessage id="ui-tenant-settings.settings.saml.idp.homeInstitution" />}
             name="homeInstitution.id"
             id="saml_homeInstitution"
@@ -149,7 +157,6 @@ const IdentityProviderProperties = ({ idps }) => {
                             <Field
                               component={Selection}
                               dataOptions={dataOptions}
-                              disabled={!values['userCreateMissing']}
                               name={`selectedIdentityProviders[${index}].id`}
                               id={`saml_selectedIdentityProviders[${index}].id`}
                               onFilter={filterOptions}
@@ -173,7 +180,6 @@ const IdentityProviderProperties = ({ idps }) => {
                 </div>
               ))}
               <Button
-                disabled={!values['userCreateMissing']}
                 id='identity-provider-add-button'
                 onClick={() => fields.push()}
               >

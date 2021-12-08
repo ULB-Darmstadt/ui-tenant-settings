@@ -79,8 +79,8 @@ const SamlForm = ({
   const [lastValidUrl, setLastValidUrl] = useState();
 
   useEffect(() => {
-    // this sets metadataUrl everytime it's unset
-    if (!metadataUrl && initialValues.idpUrl) {
+    // this sets metadataUrl initially
+    if (!metadataUrl && initialValues.idpUrl === values.idpUrl) {
       setMetadataUrl(initialValues.idpUrl);
     }
     if (valid === true) {
@@ -95,15 +95,12 @@ const SamlForm = ({
     }
     if (changeMetadataConfirm === true) {
       setIdpList(idps);
-      // console.log('setIdpList fired, changeMetadataConfirm', changeMetadataConfirm);
     }
   });
-  // console.log('lastValidUrl', lastValidUrl, '\n valid', valid, '\n showDeleteConfirmationModal', showDeleteConfirmationModal, '\n changeMetadataConfirm', changeMetadataConfirm);
-  // console.log('metadataUrl', metadataUrl, '\n initialValues.idpUrl', initialValues.idpUrl);
+
   useEffect(() => {
-    if (idps.length > 0 && lastValidUrl === initialValues.idpUrl && valid === true) {
+    if (idps.length > 0 && values.idpUrl === initialValues.idpUrl && valid === true) {
       setIdpList(idps);
-      // console.log('setIdpList fired INITIALLY');
     }
   }, [idps, lastValidUrl]);
 
@@ -134,9 +131,11 @@ const SamlForm = ({
 
   const validateMetadataUrl = (value) => {
     if (value !== initialValues.idpUrl) {
-      if (valid === false) {
+      if (value === undefined && valid === undefined) {
+        return values?.userCreateMissing ? <FormattedMessage id="ui-tenant-settings.settings.saml.validate.fillIn" /> : openDeleteConfirmationModal();
+      } else if (valid === false) {
         return <FormattedMessage id="ui-tenant-settings.settings.saml.validate.idpUrl" />;
-      } else if (valid === true && value !== lastValidUrl) {
+      } else if (valid === true && value !== undefined && value !== lastValidUrl) {
         openDeleteConfirmationModal();
       }
     }

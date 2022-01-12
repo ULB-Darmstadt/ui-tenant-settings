@@ -105,7 +105,7 @@ const SamlForm = ({
   }, [idps, lastValidUrl]);
 
   // service provider metadata download url
-  const downloadSPMetadataUrl = `${stripes.okapi.url}/_/invoke/${stripes.okapi.tenant}/saml/metadata`;
+  const downloadSPMetadataUrl = `${stripes.okapi.url}/_/invoke/tenant/${stripes.okapi.tenant}/saml/metadata`;
 
   const identifierOptions = (optionLists.identifierOptions || []).map(i => (
     { id: i.key, label: i.label, value: i.key, selected: initialValues.userProperty === i.key }
